@@ -1,0 +1,9 @@
+.idea
+node_modules
+.env
+dist
+logs
+ormlogs.log
+cert.pem
+key.pem
+static/uploads/*

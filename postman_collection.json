@@ -1,0 +1,2294 @@
+{
+	"info": {
+		"_postman_id": "c5563eb8-f76d-40a4-a3a3-b82c547364bf",
+		"name": "E-commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15739447"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"access_token\", response.result.accessToken);",
+									"postman.setEnvironmentVariable(\"refresh_key\", response.result.refreshKey);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "for",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"super.puper@gmail.com\",\n    \"password\": \"SuperPuper12#$\",\n    \"deviceId\": 3,\n    \"rememberMe\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/public/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/auth/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"verify_key\", response.verifyKey);",
+									"postman.setEnvironmentVariable(\"verify_token\", response.verifyToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Valod\",\n    \"lastName\": \"Valodyan\",\n    \"email\": \"grigor.grigoryan978@icloud.com\",\n    \"password\": \"Test1234!\",\n    \"phone\": \"+37477076121\",\n    \"country\": \"Armenia\",\n    \"city\": \"Yerevan\",\n    \"gender\": \"male\",\n    \"address\": \"gyulbenkyan 29a1\",\n    \"birthDate\": \"1997-02-18\",\n    \"verifyType\": \"email\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/public/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verifyToken\": \"{{verify_token}}\",\n    \"verifyKey\": \"{{verify_key}}\",\n    \"deviceId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/public/auth/register/verify",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"auth",
+								"register",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"jwt_token\", response.newJwtToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/auth/refresh-token/{{refresh_key}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"auth",
+								"refresh-token",
+								"{{refresh_key}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "list users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "phone,like,770761",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "birthDate,range,[1991-08-20T11:53:55.318Z^2021-08-20T11:53:55.318Z]",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "birthDate,<=,1961-08-20T11:53:55.318Z|birthDate,<=,1981-08-20T11:53:55.318Z",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "birthDate,lte,2031-08-20T11:53:55.318Z",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "list users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/admin/user",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "lastName,DESC",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "withDeleted",
+											"value": "true",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "phone,like,770761",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "birthDate,range,[1991-08-20T11:53:55.318Z^2021-08-20T11:53:55.318Z]",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "birthDate,<=,1961-08-20T11:53:55.318Z|birthDate,<=,1981-08-20T11:53:55.318Z",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "birthDate,lte,2031-08-20T11:53:55.318Z",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET,PUT,POST,DELETE,OPTIONS"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Lang, X-Api-Key"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "Authorization"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2514"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9d2-y6qvQsVpyj1OO6O9AeLax7BbPMs\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 09 Nov 2022 16:28:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": [\n        {\n            \"id\": \"83020a51-2b8b-4641-a4d7-0744a60f3db5\",\n            \"createdAt\": \"2022-11-05T01:07:20.932Z\",\n            \"updatedAt\": \"2022-11-05T01:07:20.938Z\",\n            \"deletedAt\": null,\n            \"defaultPicture\": \"profile_icon.png\",\n            \"profilePicture\": null,\n            \"firstName\": \"Client\",\n            \"lastName\": \"Clientyan\",\n            \"email\": \"client@gmail.com\",\n            \"phone\": \"+37488888888\",\n            \"gender\": null,\n            \"verifyToken\": null,\n            \"verifiedDate\": \"2022-11-05\",\n            \"verifiedType\": null,\n            \"verifiedPassport\": false,\n            \"verifiedLicense\": false,\n            \"blockedDate\": null,\n            \"birthDate\": \"2022-11-05\",\n            \"rating\": null\n        },\n        {\n            \"id\": \"b2439eb5-4c31-4689-9a96-97ee332a8ae1\",\n            \"createdAt\": \"2022-11-05T01:07:20.941Z\",\n            \"updatedAt\": \"2022-11-05T01:07:20.947Z\",\n            \"deletedAt\": null,\n            \"defaultPicture\": \"profile_icon.png\",\n            \"profilePicture\": null,\n            \"firstName\": \"Operator\",\n            \"lastName\": \"Operatoryan\",\n            \"email\": \"operator@gmail.com\",\n            \"phone\": \"+37410101010\",\n            \"gender\": \"other\",\n            \"verifyToken\": null,\n            \"verifiedDate\": \"2022-11-05\",\n            \"verifiedType\": null,\n            \"verifiedPassport\": false,\n            \"verifiedLicense\": false,\n            \"blockedDate\": null,\n            \"birthDate\": \"2022-11-05\",\n            \"rating\": null\n        },\n        {\n            \"id\": \"507e7d98-d112-4b06-af14-c2450634a97e\",\n            \"createdAt\": \"2022-11-05T01:07:20.950Z\",\n            \"updatedAt\": \"2022-11-05T01:07:20.957Z\",\n            \"deletedAt\": null,\n            \"defaultPicture\": \"profile_icon.png\",\n            \"profilePicture\": null,\n            \"firstName\": \"Content\",\n            \"lastName\": \"Writeryan\",\n            \"email\": \"content@gmail.com\",\n            \"phone\": \"+37411111111\",\n            \"gender\": \"other\",\n            \"verifyToken\": null,\n            \"verifiedDate\": \"2022-11-05\",\n            \"verifiedType\": null,\n            \"verifiedPassport\": false,\n            \"verifiedLicense\": false,\n            \"blockedDate\": null,\n            \"birthDate\": \"2022-11-05\",\n            \"rating\": null\n        },\n        {\n            \"id\": \"e19cb8bb-e18d-40fb-992f-739c983535a2\",\n            \"createdAt\": \"2022-11-05T01:07:20.916Z\",\n            \"updatedAt\": \"2022-11-05T01:07:20.928Z\",\n            \"deletedAt\": null,\n            \"defaultPicture\": \"profile_icon.png\",\n            \"profilePicture\": \"super_admin_icon.png\",\n            \"firstName\": \"Grigorious\",\n            \"lastName\": \"Grigoryan\",\n            \"email\": \"grigor.grigoryan978@gmail.com\",\n            \"phone\": \"+37477076121\",\n            \"gender\": \"male\",\n            \"verifyToken\": null,\n            \"verifiedDate\": \"2022-11-05\",\n            \"verifiedType\": null,\n            \"verifiedPassport\": true,\n            \"verifiedLicense\": true,\n            \"blockedDate\": null,\n            \"birthDate\": \"2022-11-05\",\n            \"rating\": null\n        },\n        {\n            \"id\": \"298d675e-558e-4c90-ab4d-b1c1ac633609\",\n            \"createdAt\": \"2022-11-09T08:55:55.322Z\",\n            \"updatedAt\": \"2022-11-09T08:55:55.322Z\",\n            \"deletedAt\": null,\n            \"defaultPicture\": \"profile_icon.png\",\n            \"profilePicture\": \"\",\n            \"firstName\": \"Levon\",\n            \"lastName\": \"Khachatryan\",\n            \"email\": \"levonkhachatriaan@gmail.com\",\n            \"phone\": \"+37498890053\",\n            \"gender\": \"male\",\n            \"verifyToken\": \"cbd50023-94c6-4fe9-91b4-e9b3a7dd40d1\",\n            \"verifiedDate\": null,\n            \"verifiedType\": null,\n            \"verifiedPassport\": false,\n            \"verifiedLicense\": false,\n            \"blockedDate\": null,\n            \"birthDate\": \"1997-12-12\",\n            \"rating\": null\n        }\n    ],\n    \"count\": 5\n}"
+						}
+					]
+				},
+				{
+					"name": "get user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/user/f3b962b6-e471-4ea7-b17e-e644b77ab767",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"f3b962b6-e471-4ea7-b17e-e644b77ab767"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"ne\",\n    \"lastName\": \"use\",\n    \"email\": \"asjfalbflasbfl@aslflajsf.com\",\n    \"phone\": \"+37477076121\",\n    \"country\": \"string\",\n    \"city\": \"string\",\n    \"address\": \"string\",\n    \"gender\": \"string\",\n    \"birthDate\": \"1997-02-18\",\n    \"verifyBy\": \"phone\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/user/restore",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\",\n    \"phone\": \"string\",\n    \"password\": \"string\",\n    \"country\": \"string\",\n    \"city\": \"string\",\n    \"address\": \"string\",\n    \"gender\": \"string\",\n    \"birthDate\": \"1997-02-18\",\n    \"blockedAt\": \"1997-02-18\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/v1/user/4",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload user profile picture",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_picture",
+									"type": "file",
+									"src": "/Users/grigorious/Downloads/665665858.356129.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/admin/user/618772c2-a283-4159-9c34-efb29d46ed16/profile-picture",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"618772c2-a283-4159-9c34-efb29d46ed16",
+								"profile-picture"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/user/b1f0d95d-10ad-412d-af6b-70d4e09cc302",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"b1f0d95d-10ad-412d-af6b-70d4e09cc302"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "list roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/role",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/role/29999456-9436-44de-8ede-6290e36c8a3d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"role",
+								"29999456-9436-44de-8ede-6290e36c8a3d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"super_admin\",\n    \"permissions\": [\"user_update\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/role",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"permissionIds\": [\"47e658d8-e693-449a-b477-67bd8e690da6\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/role/74726e53-4f03-4d3b-ad9e-6886b73dd408",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"role",
+								"74726e53-4f03-4d3b-ad9e-6886b73dd408"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/role/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"role",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [30,40]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/role/restore",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"role",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Permission",
+			"item": [
+				{
+					"name": "list permissions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/permission",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list available permissions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/permission/available",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission",
+								"available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get permission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/permission/5e5a6067-9439-4966-b2fe-40498a4f201f",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission",
+								"5e5a6067-9439-4966-b2fe-40498a4f201f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create permission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"super_admin\", // required\n    \"permissions\": {\n        \"order\": {\n            \"create\": true,\n            \"read\": true,\n            \"update\": true,\n            \"delete\": false\n        },\n        \"user\": {\n            \"create\": true,\n            \"read\": true,\n            \"update\": true,\n            \"delete\": false\n        }  // required\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/permission",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update permission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"super_admin\",\n    \"permissions\": {\n        \"zxc\": {\n            \"create\": true,\n            \"read\": true,\n            \"update\": true,\n            \"delete\": false\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/permission/29999456-9436-44de-8ede-6290e36c8a3d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission",
+								"29999456-9436-44de-8ede-6290e36c8a3d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete permission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/permission/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore permission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [30,40]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/permission/restore",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"permission",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Language",
+			"item": [
+				{
+					"name": "list languages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/language",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"language"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get language",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/public/language/1?with_translations=true",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"public",
+								"language",
+								"1"
+							],
+							"query": [
+								{
+									"key": "with_translations",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"string\",\n    \"shortCode\": \"string\",\n    \"label\": \"label\",\n    \"isDefault\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/admin/language",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"language"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"string\",\n    \"shortCode\": \"string\",\n    \"label\": \"label\",\n    \"isDefault\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/admin/language/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"language",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update language font",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "font",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/admin/language/1/font",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"language",
+								"1",
+								"font"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/admin/language/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"language",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore languages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [30,40]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/admin/language/restore",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"language",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Translation",
+			"item": [
+				{
+					"name": "list translations",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/public/translation?prefix=translation&language_code=en_us",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"public",
+								"translation"
+							],
+							"query": [
+								{
+									"key": "prefix",
+									"value": "translation"
+								},
+								{
+									"key": "language_code",
+									"value": "en_us"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get translation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/public/translation/1?prefix=translation",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"public",
+								"translation",
+								"1"
+							],
+							"query": [
+								{
+									"key": "prefix",
+									"value": "translation"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create translation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languageId\": \"afe707e7-3bf7-4ce0-86ab-f355f32aa0fe\",\n    \"key\": \"sign_ojhfjhut\",\n    \"value\": \"Sign Omhgmhgt\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/translation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"translation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update translation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languageId\": 1,\n    \"key\": \"sign_out\",\n    \"value\": \"Sign Out\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/admin/translation/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"translation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete translation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/admin/translation/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"translation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore translations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [30,40]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/admin/translation/restore",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"admin",
+								"translation",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "get categories tree",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get public categories tree",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/category/6ac1130f-c37a-4dfe-84e0-416de32e2313",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"category",
+								"6ac1130f-c37a-4dfe-84e0-416de32e2313"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get public category",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/category/8f14023a-4241-4cc3-af85-e3e64eba1376",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"category",
+								"8f14023a-4241-4cc3-af85-e3e64eba1376"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Category 7\",\n    \"description\": \"description\",\n    \"isPublic\": true,\n    \"parentCategoryId\": \"7f47d3a1-32c2-4b56-a7bf-d8b89e4fe78b\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryId\": 6, // attach to parent category\n    \"name\": \"Category\",\n    \"description\": \"description\",\n    \"isPublic\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/category/7f47d3a1-32c2-4b56-a7bf-d8b89e4fe78b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"category",
+								"7f47d3a1-32c2-4b56-a7bf-d8b89e4fe78b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/category/7f47d3a1-32c2-4b56-a7bf-d8b89e4fe78b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"category",
+								"7f47d3a1-32c2-4b56-a7bf-d8b89e4fe78b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\"7f47d3a1-32c2-4b56-a7bf-d8b89e4fe78b\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/category/restore",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"category",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "list items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/item?q=Tag4&searchBy=name,description,tag",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "Tag4"
+								},
+								{
+									"key": "searchBy",
+									"value": "name,description,tag"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list public items",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/item",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/item/e2b51219-69fd-4499-bbb7-0d7045ec6301",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item",
+								"e2b51219-69fd-4499-bbb7-0d7045ec6301"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get public item",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/item/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Item created by user\",\n    \"description\": \"description blah with tag\",\n    \"price\": \"100\",\n    \"quantity\": 0,\n    \"tagIds\": [\"4a360b10-3e7a-45bf-b65e-f5a35302e0b1\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/item",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryId\": \"8f14023a-4241-4cc3-af85-e3e64eba1376\",\n    \"tagIds\": [\"4a360b10-3e7a-45bf-b65e-f5a35302e0b1\", \"59f9e401-c0bc-480b-b534-b8036a330792\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/item/e2b51219-69fd-4499-bbb7-0d7045ec6301",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item",
+								"e2b51219-69fd-4499-bbb7-0d7045ec6301"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/item/3770b1e5-1a25-4379-ac3a-213448be226d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item",
+								"3770b1e5-1a25-4379-ac3a-213448be226d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [30,40]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/item/restore",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload item Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "item_image",
+									"type": "file",
+									"src": "/Users/grigorious/Downloads/345034905_782759003121409_5185147780705226722_n.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/admin/item/e2b51219-69fd-4499-bbb7-0d7045ec6301/upload",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"item",
+								"e2b51219-69fd-4499-bbb7-0d7045ec6301",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag",
+			"item": [
+				{
+					"name": "list tags",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tag",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list public tags",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/tag",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"tag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get tag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tag/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tag",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get public tag",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/tag/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"tag",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create tag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tag4\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/tag",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update tag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"asdasd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/tag/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tag",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete tag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tag/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tag",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restore tag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [30,40]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/tag/restore",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tag",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
